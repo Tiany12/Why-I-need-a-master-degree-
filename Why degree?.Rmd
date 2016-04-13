@@ -1,0 +1,74 @@
+---
+title: "Why degree"
+output: html_document
+---
+
+When confronted with the question "How would this degree help fulfill your aspirations?", I thought nothing talks louder than data. So I collected some data and did this analysis.  
+
+#Data Collection
+- I searched for jobs named "data scientist", and checked out the most relevant 120 results.
+- Then I selected jobs with specific requirements about degrees.
+- And I also selected jobs with different job level to see the trend.
+
+#Overview of data
+```{r read data, echo = FALSE}
+raw_data <- read.csv("Why degree.csv", sep = ";", header = TRUE)
+head(raw_data)
+```
+Then we check out how many of them requires a Master degree.  
+```{r overview, echo = FALSE}
+library(ggplot2)
+library(grid)
+p1 <- ggplot(raw_data)+geom_bar(aes(x = Minimum.Requirement ,fill = Minimum.Requirement ))+labs(title = "Overview of the job requirements.")+labs(y = "Num. of certain requirement")
+p2 <-ggplot(raw_data)+geom_bar(aes(x = factor(1), fill = Minimum.Requirement))+labs(title = "Pie chart of different requirements")+labs(x = " ")+labs(y = " ")+coord_polar(theta = "y")
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 1)))
+vplayout <-  function(x,y){
+  viewport(layout.pos.row = x, layout.pos.col = y)
+}
+print(p1, vp = vplayout(1,1))
+print(p2, vp = vplayout(2,1))
+```
+
+Here we can see that half of the jobs do not require a master degree. Then why should I need one?  
+
+#Why should I need a master degree
+##A master degree is a license to senior jobs
+Unlike the previous analysis, more senior jobs require a master degree
+
+```{r analysis about seniro jobs, echo = FALSE}
+p1 <- ggplot(subset(raw_data, Job.Level == "Junior"))+geom_bar(aes(x = Minimum.Requirement ,fill = Minimum.Requirement ))+labs(title = "Junior jobs")+labs(y = "Num. of requirements")
+p2 <-ggplot(subset(raw_data, Job.Level == "Junior"))+geom_bar(aes(x = factor(1), fill = Minimum.Requirement))+labs(x = " ")+labs(y = " ")+coord_polar(theta = "y")
+p3 <- ggplot(subset(raw_data, Job.Level == "Senior"))+geom_bar(aes(x = Minimum.Requirement ,fill = Minimum.Requirement ))+labs(title = "Senior jobs")+labs(y = "Num. of requirements")
+p4 <-ggplot(subset(raw_data, Job.Level == "Senior"))+geom_bar(aes(x = factor(1), fill = Minimum.Requirement))+labs(x = " ")+labs(y = " ")+coord_polar(theta = "y")
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 2)))
+print(p1, vp = vplayout(1,1))
+print(p3, vp = vplayout(1,2))
+print(p2, vp = vplayout(2,1))
+print(p4, vp = vplayout(2,2))
+```
+
+The total number of jobs from different job level are different. So it's better to compare them via pie chart.   
+And we can observe that a larger part of senior jobs require a master degree.     
+
+##A master degree is a license to Fortune 500 companies
+Things are more obvious when talking about jobs in a Fortune 500 company.
+```{r analysis about big name companies, echo = FALSE}
+p1 <- ggplot(subset(raw_data, Fortune500 == 0))+geom_bar(aes(x = Minimum.Requirement ,fill = Minimum.Requirement ))+labs(title = "Oidinary companies")+labs(y = "Num. of requirements")
+p2 <-ggplot(subset(raw_data, Fortune500 == 0))+geom_bar(aes(x = factor(1), fill = Minimum.Requirement))+labs(x = " ")+labs(y = " ")+coord_polar(theta = "y")
+p3 <- ggplot(subset(raw_data, Fortune500 == 1))+geom_bar(aes(x = Minimum.Requirement ,fill = Minimum.Requirement ))+labs(title = "Fortune 500 companies")+labs(y = "Num. of requirements")
+p4 <-ggplot(subset(raw_data, Fortune500 == 1))+geom_bar(aes(x = factor(1), fill = Minimum.Requirement))+labs(x = " ")+labs(y = " ")+coord_polar(theta = "y")
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 2)))
+print(p1, vp = vplayout(1,1))
+print(p3, vp = vplayout(1,2))
+print(p2, vp = vplayout(2,1))
+print(p4, vp = vplayout(2,2))
+```
+
+When we focus on the pie chart, we can see a larger part of jobs offered by a Fortune 500 company requires a master degree.   
+
+##Sum up
+In a word, a master degree can give me more opportunities as being an outstaning data scientist. Espeically a master degree of business analytics offered by MIT.
+
